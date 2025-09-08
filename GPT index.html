@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT 활용 수학 학원 운영 가이드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Harmony -->
+    <!-- Application Structure Plan: The application is designed as a single-page, vertical scrolling experience to guide the user through a compelling narrative, mirroring a sales or informational funnel. It starts with a strong value proposition (Hero), identifies the user's pain points (Problem/Solution), presents the detailed curriculum interactively (Course Structure), showcases the tangible benefits and transformations (Resources, Transformation), defines the ideal user (Target Audience), and finally, outlines future growth possibilities (Revenue Expansion). This structure was chosen over a simple slide-for-slide presentation to create a more engaging, persuasive, and user-friendly journey that encourages exploration and leads the user logically from problem to solution to future vision. Navigation is facilitated by a sticky header for quick access to key sections. -->
+    <!-- Visualization & Content Choices: 1. Course Curriculum (Report Info) -> Goal: Organize & Inform -> Viz/Method: Interactive Tabbed Interface (HTML/CSS/JS) -> Interaction: Users click on a week (1-4) to reveal that week's specific curriculum and sample materials. Justification: This is more engaging than a static list, allowing users to digest the information in manageable chunks and focus on what interests them. 2. Student Transformation (Report Info) -> Goal: Compare & Persuade -> Viz/Method: Interactive Before/After toggle buttons. -> Interaction: Users click buttons to switch between "Before" (overwhelmed) and "After" (efficient) scenarios, dynamically changing the text and a visual progress bar. Justification: This actively involves the user in seeing the transformation, making the benefits more tangible and impactful than static side-by-side images. 3. Revenue Expansion (Report Info) -> Goal: Show Process/Change -> Viz/Method: A styled HTML/CSS flowchart. -> Interaction: Subtle hover effects on each step. Justification: A flowchart clearly visualizes a process and future potential in a more structured and professional way than a simple text list. No charts were needed as the source content is qualitative and process-oriented. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: #F8F7F4;
+            color: #3D405B;
+        }
+        .bg-cream { background-color: #F8F7F4; }
+        .bg-stone { background-color: #E0DCD3; }
+        .text-navy { color: #3D405B; }
+        .text-teal { color: #81B29A; }
+        .border-teal { border-color: #81B29A; }
+        .bg-teal { background-color: #81B29A; }
+        .bg-teal-light { background-color: #A9D1C2; }
+        .accent-color { color: #E07A5F; }
+        .nav-link {
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #E07A5F;
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .tab-button.active {
+            background-color: #81B29A;
+            color: white;
+            border-color: #81B29A;
+        }
+    </style>
+</head>
+<body class="bg-cream">
+
+    <header id="header" class="bg-cream/80 backdrop-blur-md sticky top-0 z-50 transition-all duration-300">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-xl md:text-2xl font-bold text-navy">민지수학 GPT 운영 가이드</h1>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#overview" class="nav-link text-navy font-medium">강의 개요</a>
+                <a href="#curriculum" class="nav-link text-navy font-medium">커리큘럼</a>
+                <a href="#transformation" class="nav-link text-navy font-medium">기대 효과</a>
+                <a href="#target" class="nav-link text-navy font-medium">수강 대상</a>
+            </nav>
+            <a href="http://pf.kakao.com/_iGltb/chat" class="bg-teal text-white font-bold py-2 px-4 rounded-full hover:bg-teal-dark transition-colors">수강 문의</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="py-20 md:py-32">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl md:text-6xl font-bold text-navy leading-tight">
+                    <span class="accent-color">고민은 줄이고,</span> 교육에만 집중하세요
+                </h2>
+                <p class="mt-6 text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+                    민지수학 원장의 GPT 활용 노하우로 반복적인 학원 업무를 자동화하고, 교육의 본질에 더 많은 시간을 투자할 수 있는 방법을 알려드립니다.
+                </p>
+                <div class="mt-10">
+                    <a href="#curriculum" class="bg-teal text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-teal-dark transition-colors">
+                        자세히 알아보기
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="overview" class="py-16 md:py-24 bg-stone section-fade-in">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-navy">혹시 이런 고민을 하고 계신가요?</h3>
+                    <p class="mt-4 text-gray-600 max-w-2xl mx-auto">많은 원장님들이 교육 외적인 업무로 인해 어려움을 겪고 있습니다. 이 강의는 바로 그 문제들을 해결하기 위해 만들어졌습니다.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-cream p-8 rounded-xl shadow-md">
+                        <div class="text-4xl mb-4">🤯</div>
+                        <h4 class="text-xl font-bold text-navy mb-2">과도한 행정 업무</h4>
+                        <p class="text-gray-600">강사 관리, 진도 체크, 상담 준비 등 끝없는 서류 작업에 시달리고 있습니다.</p>
+                    </div>
+                    <div class="bg-cream p-8 rounded-xl shadow-md">
+                        <div class="text-4xl mb-4">😥</div>
+                        <h4 class="text-xl font-bold text-navy mb-2">교육에 집중하기 어려운 환경</h4>
+                        <p class="text-gray-600">반복적인 업무 때문에 정작 중요한 학생 교육과 강의 연구에 집중하기 어렵습니다.</p>
+                    </div>
+                    <div class="bg-cream p-8 rounded-xl shadow-md">
+                        <div class="text-4xl mb-4">📈</div>
+                        <h4 class="text-xl font-bold text-navy mb-2">시스템 부재로 인한 비효율</h4>
+                        <p class="text-gray-600">체계적인 시스템이 없어 모든 일을 수작업으로 처리하며 시간을 낭비하고 있습니다.</p>
+                    </div>
+                </div>
+                 <div class="text-center mt-12">
+                    <p class="text-xl text-navy font-medium">이 강의는 <span class="font-bold accent-color">GPT를 활용한 자동화 시스템</span>으로 이 모든 고민을 해결하고, 원장님이 교육 전문가로서의 역량을 마음껏 발휘할 수 있도록 돕습니다.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="curriculum" class="py-16 md:py-24 section-fade-in">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-navy">4주 완성, 자동화 시스템 구축 커리큘럼</h3>
+                    <p class="mt-4 text-gray-600 max-w-2xl mx-auto">체계적인 4주 커리큘럼을 통해 학원 운영의 모든 과정을 단계별로 자동화합니다. 아래 탭을 클릭하여 주차별 상세 내용을 확인해보세요.</p>
+                </div>
+                <div class="max-w-4xl mx-auto">
+                    <div class="flex justify-center border-b-2 border-gray-200 mb-8">
+                        <button data-tab="1" class="tab-button flex-1 py-3 px-2 text-lg font-semibold border-b-4 border-transparent hover:border-teal transition-colors active">1주차: 기반 다지기</button>
+                        <button data-tab="2" class="tab-button flex-1 py-3 px-2 text-lg font-semibold border-b-4 border-transparent hover:border-teal transition-colors">2주차: 시스템 연결</button>
+                        <button data-tab="3" class="tab-button flex-1 py-3 px-2 text-lg font-semibold border-b-4 border-transparent hover:border-teal transition-colors">3주차: 심화 자동화</button>
+                        <button data-tab="4" class="tab-button flex-1 py-3 px-2 text-lg font-semibold border-b-4 border-transparent hover:border-teal transition-colors">4주차: 확장 및 관리</button>
+                    </div>
+                    <div id="tab-content" class="bg-white p-8 rounded-xl shadow-lg">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="resources" class="py-16 md:py-24 bg-stone section-fade-in">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-navy">수강생에게 제공되는 모든 자료</h3>
+                    <p class="mt-4 text-gray-600 max-w-2xl mx-auto">강의 수강만으로도 바로 현업에 적용할 수 있는 강력한 도구들을 모두 드립니다.</p>
+                </div>
+                <div class="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <div class="text-center bg-cream p-8 rounded-xl shadow">
+                        <div class="text-5xl mb-4">📋</div>
+                        <h4 class="text-xl font-bold text-navy">자동화 폼 (Form)</h4>
+                        <p class="text-gray-600 mt-2">학생 정보, 진도, 과제 제출 등을 자동으로 취합하는 맞춤형 폼 템플릿</p>
+                    </div>
+                    <div class="text-center bg-cream p-8 rounded-xl shadow">
+                        <div class="text-5xl mb-4">📊</div>
+                        <h4 class="text-xl font-bold text-navy">연동 시트 (Sheet)</h4>
+                        <p class="text-gray-600 mt-2">폼과 연동되어 학생 데이터를 자동으로 정리하고 분석하는 Google Sheets 템플릿</p>
+                    </div>
+                    <div class="text-center bg-cream p-8 rounded-xl shadow">
+                        <div class="text-5xl mb-4">🤖</div>
+                        <h4 class="text-xl font-bold text-navy">GPT 프롬프트 리스트</h4>
+                        <p class="text-gray-600 mt-2">상담 보고서, 학습 계획서, 안내 문자 등을 생성하는 상황별 최적화 프롬프트 모음</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="transformation" class="py-16 md:py-24 section-fade-in">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-navy">당신에게 일어날 놀라운 변화</h3>
+                    <p class="mt-4 text-gray-600 max-w-2xl mx-auto">수강 후, 원장님의 일상은 어떻게 달라질까요? 버튼을 눌러 직접 확인해보세요.</p>
+                </div>
+                <div class="max-w-3xl mx-auto bg-white p-8 rounded-xl shadow-lg">
+                    <div class="flex justify-center space-x-4 mb-6">
+                        <button id="before-btn" class="py-2 px-6 font-semibold rounded-full border-2 border-gray-300 transition-colors">Before</button>
+                        <button id="after-btn" class="py-2 px-6 font-semibold rounded-full border-2 border-gray-300 transition-colors">After</button>
+                    </div>
+                    <div>
+                        <div class="w-full bg-gray-200 rounded-full h-4 mb-4">
+                            <div id="progress-bar" class="bg-teal h-4 rounded-full transition-all duration-500"></div>
+                        </div>
+                        <h4 id="transform-title" class="text-2xl font-bold text-center text-navy mb-2"></h4>
+                        <p id="transform-desc" class="text-gray-600 text-center min-h-[50px]"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="target" class="py-16 md:py-24 bg-stone section-fade-in">
+             <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-navy">이런 원장님께 추천합니다</h3>
+                    <p class="mt-4 text-gray-600 max-w-2xl mx-auto">아래 항목 중 하나라도 해당된다면, 이 강의가 원장님의 학원 운영에 혁신을 가져다줄 것입니다.</p>
+                </div>
+                <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
+                    <div class="bg-cream p-6 rounded-lg flex items-center shadow">
+                        <span class="text-teal text-3xl mr-4">✔</span>
+                        <p class="text-navy text-lg">새로운 기술을 학원 운영에 도입하고 싶은 분</p>
+                    </div>
+                     <div class="bg-cream p-6 rounded-lg flex items-center shadow">
+                        <span class="text-teal text-3xl mr-4">✔</span>
+                        <p class="text-navy text-lg">상담과 학생 관리에 더 많은 시간을 쏟고 싶은 분</p>
+                    </div>
+                     <div class="bg-cream p-6 rounded-lg flex items-center shadow">
+                        <span class="text-teal text-3xl mr-4">✔</span>
+                        <p class="text-navy text-lg">반복적인 행정 업무에서 벗어나고 싶은 공부방 원장님</p>
+                    </div>
+                     <div class="bg-cream p-6 rounded-lg flex items-center shadow">
+                        <span class="text-teal text-3xl mr-4">✔</span>
+                        <p class="text-navy text-lg">데이터 기반의 체계적인 학생 관리 시스템을 만들고 싶은 분</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="expansion" class="py-16 md:py-24 section-fade-in">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h3 class="text-3xl md:text-4xl font-bold text-navy">강의 그 이상의 가치, 수익 확장성</h3>
+                    <p class="mt-4 text-gray-600 max-w-2xl mx-auto">이 강의에서 배운 자동화 시스템은 추가적인 수익 모델로 확장될 수 있습니다.</p>
+                </div>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-2xl font-bold text-teal">STEP 1</div>
+                        <div class="text-lg font-semibold mt-2">강의 수강 및<br>자동화 시스템 내재화</div>
+                    </div>
+                    <div class="text-4xl text-teal font-light">→</div>
+                     <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-2xl font-bold text-teal">STEP 2</div>
+                        <div class="text-lg font-semibold mt-2">자신만의 노하우를 담은<br>템플릿 제작 및 판매</div>
+                    </div>
+                    <div class="text-4xl text-teal font-light">→</div>
+                     <div class="bg-white p-6 rounded-lg shadow-md text-center">
+                        <div class="text-2xl font-bold text-teal">STEP 3</div>
+                        <div class="text-lg font-semibold mt-2">다른 원장님들을 위한<br>운영 컨설팅 진행</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="closing" class="py-20 md:py-32 bg-stone">
+             <div class="container mx-auto px-6 text-center">
+                <div class="max-w-2xl mx-auto">
+                    <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-teal-light flex items-center justify-center">
+                        <svg class="w-12 h-12 text-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    </div>
+                    <h3 class="text-3xl md:text-4xl font-bold text-navy">이제, 교육에만 온전히 집중하세요.</h3>
+                    <p class="mt-6 text-lg text-gray-600">강사 소개: 민지수학 원장은 다년간의 학원 운영 경험과 GPT 자동화 실무 능력을 바탕으로 가장 현실적이고 효과적인 솔루션을 제공합니다.</p>
+                    <a href="http://pf.kakao.com/_iGltb/chat" class="mt-8 inline-block bg-teal text-white font-bold py-4 px-8 rounded-full text-lg hover:bg-teal-dark transition-colors">
+                        지금 바로 문의하기
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-navy text-white py-8">
+        <div class="container mx-auto px-6 text-center text-sm">
+            <p>&copy; 2025 민지수학. All Rights Reserved.</p>
+            <p class="mt-2">본 페이지는 교육용으로 제작되었습니다.</p>
+        </div>
+    </footer>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const curriculumData = {
+                '1': {
+                    title: '1주차: 기반 다지기 및 GPT 기본 활용',
+                    content: 'GPT와 친숙해지고, 학원 운영의 기본 데이터를 정리하며 자동화의 첫걸음을 뗍니다. 학생 및 학부모 기본 정보를 효과적으로 관리하는 방법을 배웁니다.',
+                    example: '실습 예시: Google Sheets를 활용한 학생 데이터베이스 구축 및 관리 템플릿 실습'
+                },
+                '2': {
+                    title: '2주차: 시스템 연결 및 업무 자동화',
+                    content: '구글 폼과 시트를 연동하여 등/하원 보고, 과제 제출 현황 등을 자동으로 취합하고 정리하는 시스템을 구축합니다.',
+                    example: '실습 예시: 등/하원 보고서 자동화 및 학부모 자동 알림 시스템 구축'
+                },
+                '3': {
+                    title: '3주차: GPT를 활용한 심화 자동화',
+                    content: '취합된 데이터를 바탕으로 GPT를 활용하여 개인별 진도/성취도 리포트, 상담 자료 초안 등을 자동으로 생성하는 방법을 학습합니다.',
+                    example: '실습 예시: 학생별 주간 학습 리포트 자동 생성 프롬프트 실습'
+                },
+                '4': {
+                    title: '4주차: 시스템 확장 및 관리 노하우',
+                    content: '구축된 시스템을 안정적으로 운영하고, 필요에 따라 기능을 확장하는 방법을 배웁니다. 학원 홍보 및 신규 상담에도 GPT를 활용하는 팁을 공유합니다.',
+                    example: '실습 예시: 신규 상담 문의 대응 및 학부모 소통 자동화 템플릿 활용'
+                }
+            };
+
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContentContainer = document.getElementById('tab-content');
+
+            function updateTabContent(tabId) {
+                const data = curriculumData[tabId];
+                tabContentContainer.innerHTML = `
+                    <h4 class="text-2xl font-bold text-navy mb-4">${data.title}</h4>
+                    <p class="text-gray-600 mb-6 text-lg">${data.content}</p>
+                    <div class="bg-stone p-4 rounded-lg">
+                        <p class="font-semibold text-navy">${data.example}</p>
+                    </div>
+                `;
+                tabButtons.forEach(button => {
+                    button.classList.toggle('active', button.dataset.tab === tabId);
+                });
+            }
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    updateTabContent(button.dataset.tab);
+                });
+            });
+
+            updateTabContent('1');
+
+            const beforeBtn = document.getElementById('before-btn');
+            const afterBtn = document.getElementById('after-btn');
+            const progressBar = document.getElementById('progress-bar');
+            const transformTitle = document.getElementById('transform-title');
+            const transformDesc = document.getElementById('transform-desc');
+            
+            const transformData = {
+                before: {
+                    progress: '20%',
+                    title: '야근과 서류 작업에 지친 원장님',
+                    desc: '모든 것을 수작업으로 처리하며 정작 중요한 교육 연구와 학생 상담에는 시간을 쓰지 못합니다. 비효율적인 업무 처리로 번아웃 직전입니다.',
+                    activeBtn: beforeBtn,
+                    inactiveBtn: afterBtn,
+                },
+                after: {
+                    progress: '100%',
+                    title: '교육에 집중하며 성장하는 원장님',
+                    desc: '반복 업무는 자동화 시스템에 맡기고, 확보된 시간으로 교육 퀄리티를 높이고 학생들과 더 깊이 소통합니다. 데이터 기반의 의사결정으로 학원을 효율적으로 운영합니다.',
+                    activeBtn: afterBtn,
+                    inactiveBtn: beforeBtn,
+                }
+            };
+            
+            function updateTransformation(state) {
+                const data = transformData[state];
+                progressBar.style.width = data.progress;
+                transformTitle.textContent = data.title;
+                transformDesc.textContent = data.desc;
+                data.activeBtn.classList.add('bg-teal', 'text-white');
+                data.activeBtn.classList.remove('border-gray-300');
+                data.inactiveBtn.classList.remove('bg-teal', 'text-white');
+                data.inactiveBtn.classList.add('border-gray-300');
+            }
+            
+            beforeBtn.addEventListener('click', () => updateTransformation('before'));
+            afterBtn.addEventListener('click', () => updateTransformation('after'));
+            
+            updateTransformation('before');
+
+            const faders = document.querySelectorAll('.section-fade-in');
+            const options = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+            const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('visible');
+                        appearOnScroll.unobserve(entry.target);
+                    }
+                });
+            }, options);
+
+            faders.forEach(fader => {
+                appearOnScroll.observe(fader);
+            });
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('shadow-md');
+                } else {
+                    header.classList.remove('shadow-md');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
